@@ -31,8 +31,6 @@ TARGET = HelloWorld
 
 
 
-
-
 ### Compiler configuration
 
 #Compile command to use
@@ -51,16 +49,7 @@ HDIR=headers
 
 
 
-
-
-
-
-
-
-
-
-### Main make targets
-
+### Utility variables
 BIN = $(BINDIR)/$(TARGET)
 HDRS = $(wildcard $(HDIR)/*.h)
 SRC = $(wildcard $(SRCDIR)/*.cpp)
@@ -71,11 +60,30 @@ OBJECTS = $(addprefix $(OBJDIR)/, $(OBJ))
 INCLUDES = -I $(HDIR)/
 
 
-SHELL = /bin/bash
+SHELL = /bin/sh
 
 
+
+
+
+
+
+
+### Main make targets
+
+# Targets for the user
 all: $(BIN)
 
+clean:
+	rm -rf $(BUILDDIR)
+
+rebuild: clean all
+
+
+
+
+
+# Inner targets
 $(BIN): dirs $(OBJECTS) $(HDRS)
 	$(CC) $(CFLAGS) $(INCLUDES) $(OBJECTS) -o $(BIN)
 
@@ -84,12 +92,5 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.cpp
 
 dirs:
 	@mkdir -p $(BUILDDIR) $(BINDIR) $(OBJDIR)
-
-clean:
-	rm -rf $(BUILDDIR)
-
-
-rebuild: clean all
-
 
 .PHONY: all rebuild
